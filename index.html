@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zgh" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Amazigh Countdown</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #ff0000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .lang-selector {
+            background-color: #222;
+            color: #fff;
+            border: 1px solid #ff0000;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            max-width: 100%;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 15px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            word-wrap: break-word;
+        }
+
+        .warning-text {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+            max-width: 800px;
+            line-height: 1.4;
+        }
+
+        .countdown-container {
+            border: 3px solid #ff0000;
+            padding: 40px 20px;
+            border-radius: 15px;
+            background-color: rgba(255, 0, 0, 0.05);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 600px;
+            box-sizing: border-box;
+        }
+
+        .counter-label {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .counter-number {
+            font-size: 6em;
+            font-weight: bold;
+            color: #ff3333;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            font-variant-numeric: tabular-nums;
+            word-wrap: break-word;
+        }
+
+        .info-section {
+            max-width: 800px;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            border-top: 1px solid #ff0000;
+            padding-top: 20px;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .info-section a {
+            color: #ff6666;
+            text-decoration: underline;
+        }
+
+        .green-section {
+            background-color: #004d00;
+            color: #ffffff;
+            padding: 50px 15px;
+            text-align: center;
+            border-top: 5px solid #00ff00;
+        }
+
+        .green-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            color: #66ff66;
+        }
+
+        .green-section p {
+            font-size: 1.3em;
+            max-width: 800px;
+            margin: 0 auto 20px auto;
+            line-height: 1.6;
+        }
+
+        .action-list {
+            list-style: none;
+            padding: 0;
+            font-size: 1.2em;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .action-list li::before {
+            content: '✓';
+            color: #00ff00;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .action-list li {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            line-height: 1.4;
+        }
+
+        /* Responsive Mobile Styles */
+        @media screen and (max-width: 768px) {
+            .header {
+                flex-direction: row;
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2em;
+                letter-spacing: 1px;
+            }
+
+            .warning-text {
+                font-size: 1.1em;
+                margin-bottom: 25px;
+            }
+
+            .countdown-container {
+                padding: 25px 15px;
+                border-width: 2px;
+            }
+
+            .counter-label {
+                font-size: 1.3em;
+            }
+
+            .counter-number {
+                font-size: 3.2em;
+            }
+
+            .info-section {
+                font-size: 1em;
+            }
+
+            .green-section {
+                padding: 40px 15px;
+            }
+
+            .green-section h2 {
+                font-size: 1.8em;
+            }
+
+            .green-section p {
+                font-size: 1.1em;
+            }
+
+            .action-list {
+                font-size: 1em;
+            }
+        }
+        
+        @media screen and (max-width: 400px) {
+            .counter-number {
+                font-size: 2.5em;
+            }
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div id="site-logo" style="font-size: 2em; font-weight: bold;">ⵣ</div>
+        <select class="lang-selector" id="lang-select" onchange="changeLanguage()">
+            <option value="zgh">🇲🇦 ⵜⴰⵎⴰⵣⵉⵖⵜ</option>
+            <option value="en">🏴󠁧󠁢󠁥󠁮󠁧󠁿 English</option>
+            <option value="ar">🇸🇦 العربية</option>
+        </select>
+    </div>
+
+    <div class="main-content">
+        <h1 id="main-title"></h1>
+
+        <div class="countdown-container">
+            <div class="counter-label" id="counter-label"></div>
+            <div class="counter-number" id="live-counter"></div>
+        </div>
+        <p class="warning-text" id="warning-text"></p>
+        <div class="info-section" id="info-text"></div>
+    </div>
+
+    <div class="green-section">
+        <h2 id="green-title"></h2>
+        <p id="green-desc"></p>
+        <ul class="action-list" id="action-list"></ul>
+    </div>
+
+    <script>
+        const translations = {
+            zgh: {
+                title: "ⴰⵙⵉⴹⵏ ⵏ ⵜⵎⴰⵣⵉⵖⵜ ⴳ ⵎⵓⵔⴰⴽⵓⵛ 🇲🇦",
+                warning: "⚠️ ⵜⴰⵎⴰⵣⵉⵖⵜ ⴰⵔ ⵜⴻⵜⵜⵏⵖⵓⴱⵓ ⵉⵎⵉⴽⴽ ⵙ ⵢⵉⵎⵉⴽⴽ. ⴰⴷ ⵓⵔ ⵜⴰⵊⵊⴷ ⴰⵡⴰⵍ ⵏⵏⵖ ⴰⴷ ⵉⵎⵎⵜ.",
+                counterLabel: "ⵉⵎⵙⵉⵡⵍⵏ ⴰⵙⵙ ⴰⴷ:",
+                info: "ⵏⵓⵙⵉ ⵖⴼ ⵓⵎⴹⴰⵏ ⴰⵙⵉⵍⴰⵏ ⴳ 1 ⵉⵏⵏⴰⵢⵔ 2025, ⵙ: 9,133,426 (24.8% ⵙⴳ 36,828,330 ⵏ ⵢⵉⵎⵣⴷⴰⵖⵏ ⵏ ⵎⵓⵔⴰⴽⵓⵛ ⴳ 2024). ⵖⴼ ⵎⴰⴷ ⴽⵔⴰ ⵏ ⵢⵉⵎⵔⵣⴰ, ⴷⴰ ⵏⵊⵍⵍⵓ 1 ⵏ ⵓⵎⵙⵉⵡⵍ ⴽⵓⵏ ⴰⵙⵙ.<br><br><small>ⵉⵙⴰⵖⵓⵍⵏ: <a href='https://www.hcp.ma/' target='_blank'>ⴰⵙⵉⴹⵏ ⴰⵎⴰⵜⴰⵢ ⵏ ⵢⵉⵎⵣⴷⴰⵖⵏ 2024</a>.</small>",
+                greenTitle: "ⵜⴰⵎⴰⵣⵉⵖⵜ ⵉ ⵜⵓⴷⵔⵜ",
+                greenDesc: "ⵎⴰⴷ ⵜⵥⴹⴰⵕⴹ ⴰⴷ ⵜⵙⴽⵔⴹ?",
+                action1: "ⵙⴰⵡⵍ ⵙ ⵜⵎⴰⵣⵉⵖⵜ ⴳ ⵜⵓⴷⵔⵜ ⵏⵏⴽ.",
+                action2: "ⴰⵔⴰ ⵙ ⵜⵎⴰⵣⵉⵖⵜ ⴳ ⵜⵓⴷⵔⵜ ⵏⵏⴽ.",
+                action3: "ⵍⵎⴷ, ⴷ ⵙⵙⵍⵎⴷ ⵜⴰⵎⴰⵣⵉⵖⵜ.",
+                dir: "ltr"
+            },
+            en: {
+                title: "Amazigh Count in Morocco 🇲🇦",
+                warning: "⚠️ The Amazigh language is slowly fading. Don't let our language die.",
+                counterLabel: "Today's Speakers:",
+                info: "Based on the original count on January 1, 2025: 9,133,426 (24.8% of Morocco's 36,828,330 total population from the Dec 2024 census data). Based on expert analyses, we lose 1 daily speaker every 24 hours. The calculation subtracts the days passed since Jan 1, 2025.<br><br><small>References: <a href='https://www.hcp.ma/' target='_blank'>HCP 2024 Census Data</a>.</small>",
+                greenTitle: "Amazigh For Life",
+                greenDesc: "What can you do to keep it alive?",
+                action1: "Speak Amazigh in your daily life.",
+                action2: "Write in Amazigh in your daily life",
+                action3: "Learn Amazigh and teach it.",
+                dir: "ltr"
+            },
+            ar: {
+                title: "إحصاء الأمازيغية في المغرب 🇲🇦",
+                warning: "⚠️ اللغة الأمازيغية تتلاشى ببطء. لا تدع لغتنا تموت.",
+                counterLabel: "المتحدثون اليوم:",
+                info: "بناءً على العدد الأصلي في 1 يناير 2025: 9,133,426 (24.8٪ من إجمالي سكان المغرب البالغ 36,828,330 نسمة حسب بيانات إحصاء دجنبر 2024). بناءً على تحليلات الخبراء، نفقد متحدثًا يوميًا واحدًا كل 24 ساعة. الحساب يطرح الأيام المنقضية منذ 1 يناير 2025.<br><br><small>المراجع: <a href='https://www.hcp.ma/' target='_blank'>بيانات إحصاء المندوبية السامية للتخطيط 2024</a>.</small>",
+                greenTitle: "الأمازيغية مدى الحياة",
+                greenDesc: "ماذا يمكنك أن تفعل لإبقائها حية؟",
+                action1: "تحدث بالأمازيغية في حياتك اليومية.",
+                action2: "اكتب بالأمازيغية في حياتك اليومية.",
+                action3: "تعلم الأمازيغية وعلمها.",
+                dir: "rtl"
+            }
+        };
+
+        // FIXED: Get current date in UTC to avoid timezone issues
+        function getCurrentUTCDay() {
+            const now = new Date();
+            return Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+        }
+
+        function updateCounter() {
+            // FIXED: Use UTC for both dates to ensure consistency
+            const startDateUTC = Date.UTC(2025, 0, 1); // January 1, 2025 UTC
+            const currentDateUTC = getCurrentUTCDay();
+            const initialSpeakers = 9133426;
+            
+            // Calculate days passed (full days only)
+            const diffTime = currentDateUTC - startDateUTC;
+            const diffDays = Math.max(0, diffTime / (1000 * 60 * 60 * 24));
+            
+            // FIXED: Subtract full days only, no floating point issues
+            const daysToSubtract = Math.floor(diffDays);
+            const currentSpeakers = initialSpeakers - daysToSubtract;
+            
+            // FIXED: Ensure we never show negative numbers
+            const finalCount = Math.max(0, currentSpeakers);
+            const formattedNumber = finalCount.toLocaleString();
+            
+            document.getElementById('live-counter').innerText = formattedNumber;
+        }
+
+        function changeLanguage() {
+            const lang = document.getElementById('lang-select').value;
+            const t = translations[lang];
+            
+            document.documentElement.dir = t.dir;
+            document.getElementById('main-title').innerHTML = t.title;
+            document.getElementById('warning-text').innerHTML = t.warning;
+            document.getElementById('counter-label').innerHTML = t.counterLabel;
+            document.getElementById('info-text').innerHTML = t.info;
+            document.getElementById('green-title').innerHTML = t.greenTitle;
+            document.getElementById('green-desc').innerHTML = t.greenDesc;
+            
+            const actionList = document.getElementById('action-list');
+            actionList.innerHTML = `
+                <li>${t.action1}</li>
+                <li>${t.action2}</li>
+                <li>${t.action3}</li>
+            `;
+
+            if (lang === 'ar') {
+                document.body.style.fontFamily = "'Amiri', 'Segoe UI', Tahoma, Arial, sans-serif";
+            } else {
+                document.body.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+            }
+        }
+
+        // FIXED: Initialize everything after DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default language
+            document.getElementById('lang-select').value = 'zgh';
+            
+            // Initialize counter
+            updateCounter();
+            
+            // Update counter every minute (more accurate than 60 seconds)
+            setInterval(updateCounter, 60000);
+            
+            // Initialize translations
+            changeLanguage();
+        });
+    </script>
+</body>
+</html>
